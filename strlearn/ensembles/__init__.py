@@ -5,6 +5,7 @@ from .WAE import WAE
 from .OnlineBagging import OnlineBagging
 from .OOB import OOB
 from .UOB import UOB
+from .ONSBoost import ONSBoost
 from .DWM import DWM
 from .REA import REA
 from .KMC import KMC
@@ -20,6 +21,7 @@ __all__ = [
     "OOB",
     "SEA",
     "UOB",
+    "ONSBoost",
     "WAE",
     "AWE",
     "AUE",
