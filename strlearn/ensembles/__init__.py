@@ -5,6 +5,8 @@ from .WAE import WAE
 from .OnlineBagging import OnlineBagging
 from .OOB import OOB
 from .UOB import UOB
+from .OnlineBoosting import OnlineBoosting
+from .RandomClassifier import RandomClassifier
 from .ONSBoost import ONSBoost
 from .DWM import DWM
 from .REA import REA
@@ -21,7 +23,9 @@ __all__ = [
     "OOB",
     "SEA",
     "UOB",
+    "OnlineBoosting",
     "ONSBoost",
+    "RandomClassifier",
     "WAE",
     "AWE",
     "AUE",
