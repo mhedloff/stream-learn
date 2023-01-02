@@ -7,7 +7,8 @@ class RandomClassifier(StreamingEnsemble):
         pass
 
     def partial_fit(self, X, y, classes=None):
-        return super().partial_fit(X, y, classes)
+        self.classes_ = classes
+        return self
 
     def predict(self, X):
-        return np.array([np.random.choice(self.classes_) for i in range(X.shape[0])])
+        return np.array([np.random.choice(self.classes_) for _ in range(X.shape[0])])
