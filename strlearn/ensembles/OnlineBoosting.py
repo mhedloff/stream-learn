@@ -11,18 +11,15 @@ class OnlineBoosting(StreamingEnsemble):
             self._l_sc = 0
             self._l_sw = 0
             self._error = 1
-            self._last_ok = True
 
         def handle_good_prediction(self, lam):
             self._l_sc += lam
             self._error = (self._l_sw + 1) / (self._l_sc + self._l_sw + 1)
-            self._last_ok = True
             return .5 * lam / (1 - self._error)
 
         def handle_wrong_prediction(self, lam):
             self._l_sw += lam
             self._error = (self._l_sw + 1) / (self._l_sc + self._l_sw + 1)
-            self._last_ok = False
             return .5 * lam / self._error
 
         def increment_age(self):
