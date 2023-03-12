@@ -47,6 +47,11 @@ class OnlineBoosting(StreamingEnsemble):
 
     def predict(self, X):
         y = np.zeros(shape=(X.shape[0], len(self.classes_)))
+        if X.shape[0] == 0:
+            print(X.shape)
+            print(X)
+            print('kurwa ja już nie dam rady z tym jebanym garbage collectorem')
+            pass
         predictions_per_clf = np.array([base_model.predict(X) for base_model in self.ensemble_]).T
         for p, current_sample_predictions in enumerate(predictions_per_clf):
             for m, base_model_prediction in enumerate(current_sample_predictions):
@@ -70,7 +75,8 @@ class OnlineBoosting(StreamingEnsemble):
             current_model = self.estimators_params[w]
             r = np.random.poisson(lambda_value)
             if r > 0:
-                base_model.partial_fit(current_x, current_y, self.classes_, sample_weight=r)
+                for i in range(r):
+                    base_model.partial_fit(current_x, current_y, self.classes_)
                 current_model.increment_age_by(1)
 
                 predicted_class = base_model.predict(current_x)

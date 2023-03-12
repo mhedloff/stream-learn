@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 from sklearn.base import ClassifierMixin
 from sklearn.metrics import accuracy_score
@@ -75,11 +77,15 @@ class TestThenTrain:
         )
 
         if self.verbose:
-            pbar = tqdm(total=stream.n_chunks)
+            # pbar = tqdm(total=stream.n_chunks)
+            pass
+        i = 0
         while True:
             X, y = stream.get_chunk()
             if self.verbose:
-                pbar.update(1)
+                # pbar.update(1)
+                i += 1
+                print(f"{os.getpid()} - {i}")
 
             # Test
             if stream.previous_chunk is not None:

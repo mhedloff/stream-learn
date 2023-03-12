@@ -75,7 +75,8 @@ class ONSBoost(OnlineBoosting):
                 new_model_params = ONSBoost.EstimatorsParams()
 
                 r = max(1, np.random.poisson(1))
-                new_base_model.partial_fit(current_x, current_y, self.classes_, sample_weight=r)
+                for i in range(r):
+                    new_base_model.partial_fit(current_x, current_y, self.classes_)
                 new_model_params.handle_good_prediction(1)
 
                 # append new base model to the end of the list
