@@ -47,11 +47,6 @@ class OnlineBoosting(StreamingEnsemble):
 
     def predict(self, X):
         y = np.zeros(shape=(X.shape[0], len(self.classes_)))
-        if X.shape[0] == 0:
-            print(X.shape)
-            print(X)
-            print('kurwa ja już nie dam rady z tym jebanym garbage collectorem')
-            pass
         predictions_per_clf = np.array([base_model.predict(X) for base_model in self.ensemble_]).T
         for p, current_sample_predictions in enumerate(predictions_per_clf):
             for m, base_model_prediction in enumerate(current_sample_predictions):
