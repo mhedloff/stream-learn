@@ -64,7 +64,7 @@ class ONSBoost(OnlineBoosting):
         defined_candidates = self._window_candidate[~np.isnan(self._window_candidate)]
         if len(defined_candidates) > 0:
             values, counts = np.unique(defined_candidates, return_counts=True)
-            candidate_i = np.int(values[np.argmax(counts)])
+            candidate_i = np.int32(values[np.argmax(counts)])
             if self.estimators_params[candidate_i].get_age() >= self.protection_period:
                 # make place for new base model
                 self.ensemble_.pop(candidate_i)

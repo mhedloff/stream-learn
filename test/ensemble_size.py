@@ -17,8 +17,8 @@ from strlearn.metrics import balanced_accuracy_score, f1_score, recall
 
 import warnings
 
-SAVED_STREAMS_PATH = "D:\\JavaTraining\\mgr\\ensemble_size_str"
-SAVED_SCORES_PATH = "D:\\JavaTraining\\mgr\\ensemble_size"
+SAVED_STREAMS_PATH = "D:\\projects\\mgr\\ensemble_size_str"
+SAVED_SCORES_PATH = "D:\\projects\\mgr\\ensemble_size"
 CDI_PATH = 'cdi'
 DDI_PATH = 'ddi'
 DISCO_PATH = 'disco'
@@ -86,41 +86,55 @@ def prepare_classifiers(base_clf):
                  update_period=200,
                  window_size=20,
                  protection_period=200)
-        for n_estimators in [3, 5, 10, 20, 30, 40, 50]
+        for n_estimators in [3, 5, 10, 20, 30, 40, 50, 75, 100]
     ]
     all_clfs = [*ons_boosts]
     return all_clfs
 
 
 def process_file(filename, dirpath, base_clf):
+    parsed_stream = parse_stream(dirpath, filename)
+    process_stream(base_clf, dirpath, filename, parsed_stream)
+
+
+def process_stream(base_clf, dirpath, filename, parsed_stream):
     prepared_classifiers = prepare_classifiers(base_clf)
     start = datetime.now()
     print(f"{start.strftime('%H:%M:%S')} starting with {filename}")
     classifiers = prepared_classifiers
     try:
-        abspath = os.path.abspath(os.path.join(SAVED_STREAMS_PATH, dirpath, filename))
         evaluator = TestThenTrain(metrics=metrics, verbose=True)
-        evaluator.process(NPYParser(abspath), classifiers)
+        evaluator.process(parsed_stream, classifiers)
         save_path = os.path.abspath(os.path.join(SAVED_SCORES_PATH, dirpath, 'ESIZE_' + str(base_clf()) + filename))
         np.save(arr=evaluator.scores, file=save_path)
-    except Exception as e:
+    except KeyError as e:
         print(f"{datetime.now().strftime('%H:%M:%S')} - {os.getpid()} - error during processing {filename} - {e}")
     print(f"{datetime.now().strftime('%H:%M:%S')} done with {filename} "
           f"(duration: {'{:.3f}'.format((datetime.now() - start).total_seconds())})")
 
 
-def process_ddi_file_mlp(filename):
-    return process_file(filename, DDI_PATH, GaussianNB)
+def parse_stream(dirpath, filename):
+    abspath = os.path.abspath(os.path.join(SAVED_STREAMS_PATH, dirpath, filename))
+    parsed_stream = NPYParser(abspath)
+    return parsed_stream
 
 
 def process_ddi_file_gnb(filename):
+    return process_file(filename, DDI_PATH, GaussianNB)
+
+def process_gnb_stream(stream):
+    return process_stream(GaussianNB, DDI_PATH, 'result_gnb', stream)
+def process_mlp_stream(stream):
+    return process_stream(MLPClassifier, DDI_PATH, 'result_mlp', stream)
+
+def process_ddi_file_mlp(filename):
     return process_file(filename, DDI_PATH, MLPClassifier)
 
 
 if __name__ == '__main__':
     print(f"{datetime.now().strftime('%H:%M:%S')} starting")
 
-    GENERATE_STREAMS = True
+    GENERATE_STREAMS = False
     GENERATE_RESULTS = True
     multiprocessing.set_start_method('spawn', force=True)
 
@@ -131,11 +145,13 @@ if __name__ == '__main__':
                 stream.save_to_npy(os.path.join(SAVED_STREAMS_PATH, DDI_PATH, filepath))
 
     if GENERATE_RESULTS:
-        process_ddi_file_gnb('w[0.2, 0.8]_s1000_nc150_nf7_cs150.npy')
-        # freeze_support()
-        # with ProcessPoolExecutor(multiprocessing.cpu_count() - 1) as pool:
-        #     for filename in list(os.listdir(os.path.join(SAVED_STREAMS_PATH, DDI_PATH))):
-        #         pool.submit(process_ddi_file_gnb, filename)
-
-    for c in prepare_classifiers():
-        print(c)
+        # process_ddi_file_gnb('w[0.2, 0.8]_s1000_nc150_nf7_cs150.npy')
+        freeze_support()
+        with ProcessPoolExecutor(multiprocessing.cpu_count() - 1) as pool:
+            pool.submit(process_gnb_stream, prepare_di_stream(1000, [.2, .9])[0])
+            pool.submit(process_mlp_stream, prepare_di_stream(1000, [.2, .9])[0])
+            # for filename in list(os.listdir(os.path.join(SAVED_STREAMS_PATH, DDI_PATH))):
+            #     pass
+    #
+    # for c in prepare_classifiers():
+    #     print(c)
