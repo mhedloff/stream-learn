@@ -1,5 +1,6 @@
 import os
 import time
+import warnings
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -13,28 +14,6 @@ TIME_FORMAT = '%H:%M:%S'
 
 
 class Logger:
-    @staticmethod
-    def prefix():
-        return f'[{os.getpid()}] :: {datetime.now().strftime(TIME_FORMAT)} '
-
-    @staticmethod
-    def info(message):
-        print(f'{Logger.prefix()} :: {Bcolors.header("INFO")} :: {message}')
-
-    @staticmethod
-    def end(message):
-        print(f'{Logger.prefix()} :: {Bcolors.ok_green("END")} :: {message}')
-
-    @staticmethod
-    def process(message):
-        print(f'{Logger.prefix()} :: {Bcolors.ok_cyan("PROCESS")} :: {message}')
-
-    @staticmethod
-    def start(message):
-        print(f'{Logger.prefix()} :: {Bcolors.ok_blue("START")} :: {message}')
-
-
-class Bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -47,19 +26,51 @@ class Bcolors:
 
     @staticmethod
     def header(message):
-        return f'{Bcolors.HEADER}{message}{Bcolors.ENDC}'
+        return Logger.prepare_message(Logger.HEADER, message)
 
     @staticmethod
     def ok_green(message):
-        return f'{Bcolors.OKGREEN}{message}{Bcolors.ENDC}'
+        return Logger.prepare_message(Logger.OKGREEN, message)
 
     @staticmethod
     def ok_cyan(message):
-        return f'{Bcolors.OKCYAN}{message}{Bcolors.ENDC}'
+        return Logger.prepare_message(Logger.OKCYAN, message)
 
     @staticmethod
     def ok_blue(message):
-        return f'{Bcolors.OKBLUE}{message}{Bcolors.ENDC}'
+        return Logger.prepare_message(Logger.OKBLUE, message)
+
+    @staticmethod
+    def fail(message):
+        return Logger.prepare_message(Logger.FAIL, message)
+
+    @staticmethod
+    def prepare_message(code, message):
+        return f'{code}{message}{Logger.ENDC}'
+
+    @staticmethod
+    def prefix():
+        return f'[{os.getpid()}] :: {datetime.now().strftime(TIME_FORMAT)}'
+
+    @staticmethod
+    def info(message):
+        print(f'{Logger.prefix()} :: {Logger.header("INFO")} :: {message}')
+
+    @staticmethod
+    def end(message):
+        print(f'{Logger.prefix()} :: {Logger.ok_green("END")} :: {message}')
+
+    @staticmethod
+    def process(message):
+        print(f'{Logger.prefix()} :: {Logger.ok_cyan("PROCESS")} :: {message}')
+
+    @staticmethod
+    def start(message):
+        print(f'{Logger.prefix()} :: {Logger.ok_blue("START")} :: {message}')
+
+    @staticmethod
+    def error(message):
+        print(f'{Logger.fail("[X]")} :: {Logger.prefix()} :: {Logger.fail("ERROR")} :: {message}')
 
 
 class TestThenTrain:
@@ -106,6 +117,8 @@ class TestThenTrain:
         else:
             self.metrics = [metrics]
         self.verbose = verbose
+        warnings.filterwarnings("ignore")
+
 
     def process(self, stream, clfs):
         """
