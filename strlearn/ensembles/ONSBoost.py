@@ -82,3 +82,7 @@ class ONSBoost(OnlineBoosting):
                 # append new base model to the end of the list
                 self.ensemble_.append(new_base_model)
                 self.estimators_params.append(new_model_params)
+
+    def __str__(self):
+        return f'ONSBOOST__n_{self.n_estimators}__p_{self.protection_period}__w_{self.window_size}' \
+               f'__k_{self.update_period}__base_{str(self.base_estimator)[:-2]}'
