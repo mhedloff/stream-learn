@@ -2,12 +2,12 @@ import functools
 import multiprocessing
 import operator
 import os
+import signal
+import sys
 import time
 import warnings
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from datetime import datetime
 from multiprocessing import freeze_support
-from time import sleep
 
 import numpy as np
 from sklearn.naive_bayes import GaussianNB
@@ -27,11 +27,12 @@ METRICS = (balanced_accuracy_score,)
 PROTECTION_PERIODS = [50, 100, 200]
 WINDOW_SIZE = [10, 20, 40]
 UPDATE_PERIODS = [50, 100, 200]
-ENSEMBLE_SIZE = [5, 30, 100]
-N_CHUNKS = 1000
-N_SAMPLES = 100
-STREAMS_LOCATION = './data_streams/'
-RESULTS_LOCATION = './parameters_results/'
+ENSEMBLE_SIZE = [5, 10, 30]
+N_CHUNKS = 10
+N_SAMPLES = 200
+DIRECTORY = 'disco/'
+STREAMS_LOCATION = os.path.join('./final/data_streams/', DIRECTORY)
+RESULTS_LOCATION = os.path.join('./final/parameters_results/', DIRECTORY)
 
 
 def ensemble_params_test(ensemble, stream_name):
@@ -58,13 +59,24 @@ def ensemble_params_test(ensemble, stream_name):
         Logger.end(f"finished processing {stream_name} with {ensemble}")
 
 
+def shutdown_pool(pool: ProcessPoolExecutor):
+    Logger.error("CANCELLED ALL FUTURES")
+    pool.shutdown(wait=True, cancel_futures=True)
+    sys.exit(0)
+
+
+def sigint_handler(arg: ProcessPoolExecutor):
+    return lambda sig, frame: shutdown_pool(arg)
+
+
 if __name__ == '__main__':
     warnings.filterwarnings("ignore")
     freeze_support()
     multiprocessing.set_start_method('spawn', force=True)
 
-    data_streams_dir = [f for f in os.listdir(os.path.join(STREAMS_LOCATION)) if not os.path.isdir(f)]
-    with ProcessPoolExecutor(max_workers=multiprocessing.cpu_count() - 1) as pool:
+    data_streams_dir = [f for f in os.listdir(os.path.abspath(STREAMS_LOCATION)) if not os.path.isdir(f)]
+    with ProcessPoolExecutor(max_workers=multiprocessing.cpu_count() - 1, max_tasks_per_child=1) as pool:
+        signal.signal(signal.SIGINT, sigint_handler(pool))
         tasks = []
         all_params = [data_streams_dir, BASE_ESTIMATORS, PROTECTION_PERIODS, WINDOW_SIZE, UPDATE_PERIODS, ENSEMBLE_SIZE]
         lengths = [len(x) for x in all_params]
@@ -79,6 +91,8 @@ if __name__ == '__main__':
                                                      update_period=update_period, protection_period=protection_period,
                                                      window_size=window_size)
                                 tasks.append(pool.submit(ensemble_params_test, estimator, d_stream))
+
         for _ in as_completed(tasks):
+            _.done()
             pending_tasks_n = len(pool._pending_work_items)
             Logger.info(f'{pending_tasks_n} left. Progress: {tasks_n - pending_tasks_n}/{tasks_n}')
