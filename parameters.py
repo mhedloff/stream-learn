@@ -16,7 +16,7 @@ from strlearn.ensembles import ONSBoost
 from strlearn.evaluators import TestThenTrain
 from strlearn.evaluators.TestThenTrain import Logger
 from strlearn.metrics import balanced_accuracy_score
-from strlearn.streams import NPYParser, StreamGenerator
+from strlearn.streams import NPYParser
 
 
 RANDOM_STATES = [1000, 100000, 101010,
@@ -28,7 +28,7 @@ PROTECTION_PERIODS = [50, 100, 200]
 WINDOW_SIZE = [10, 20, 40]
 UPDATE_PERIODS = [50, 100, 200]
 ENSEMBLE_SIZE = [5, 10, 30]
-N_CHUNKS = 10
+N_CHUNKS = 250
 N_SAMPLES = 200
 DIRECTORY = 'disco/'
 STREAMS_LOCATION = os.path.join('./final/data_streams/', DIRECTORY)
