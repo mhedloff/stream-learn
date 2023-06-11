@@ -149,6 +149,3 @@ test_stream.*
 validator*.py
 validation*.npy
 
-saved_*
-/final/data_streams/
-/final/parameters_results/

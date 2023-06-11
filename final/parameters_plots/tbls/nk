@@ -1,0 +1,22 @@
+\begin{table}[h]
+	 \centering 
+	\begin{tabular}{ll|lll|lll} 
+\toprule & $K$ & \multicolumn{3}{c}{MLPClassifier} & \multicolumn{3}{c}{GaussianNB} \\ 
+ $M$ & & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{10} & \multicolumn{1}{c|}{30} & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{10} & \multicolumn{1}{c}{30} \\ 
+ \cmidrule{3-5} \cmidrule{6-8} 
+\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI1}} & 50 &         0.788 & \textbf{0.808} & \textbf{0.825} & \textbf{0.794} & \textbf{0.806} & \textbf{0.806} \\ 
+ & 100 & \textbf{0.805} & \textbf{0.819} & \textbf{0.831} & \textbf{0.810} & \textbf{0.818} & \textbf{0.812} \\ 
+ & 200 & \textbf{0.818} & \textbf{0.828} & \textbf{0.836} & \textbf{0.823} & \textbf{0.828} & \textbf{0.820} \\ 
+\midrule
+\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI2}} & 50 &         0.808 & \textbf{0.828} & \textbf{0.845} & \textbf{0.815} & \textbf{0.829} & \textbf{0.829} \\ 
+ & 100 & \textbf{0.824} & \textbf{0.839} & \textbf{0.851} & \textbf{0.828} & \textbf{0.838} & \textbf{0.836} \\ 
+ & 200 & \textbf{0.838} & \textbf{0.847} & \textbf{0.856} & \textbf{0.842} & \textbf{0.847} & \textbf{0.841} \\ 
+\midrule
+\multirow{3}{*}{\rotatebox[origin=c]{90}{DISCO1}} & 50 &         0.780 & \textbf{0.805} & \textbf{0.819} &         0.788 & \textbf{0.800} &         0.790 \\ 
+ & 100 &         0.800 & \textbf{0.814} & \textbf{0.823} & \textbf{0.805} & \textbf{0.809} & \textbf{0.794} \\ 
+ & 200 & \textbf{0.813} & \textbf{0.823} & \textbf{0.825} & \textbf{0.816} & \textbf{0.814} & \textbf{0.798} \\ 
+ \bottomrule 
+	\end{tabular} 
+	\caption{$M$/$K$}
+	\label{tbl:ex1:nk}
+\end{table}

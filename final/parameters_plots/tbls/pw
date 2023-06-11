@@ -1,0 +1,22 @@
+\begin{table}[h]
+	 \centering 
+	\begin{tabular}{ll|lll|lll} 
+\toprule & $w$ & \multicolumn{3}{c}{MLPClassifier} & \multicolumn{3}{c}{GaussianNB} \\ 
+ $P$ & & \multicolumn{1}{c}{50} & \multicolumn{1}{c}{100} & \multicolumn{1}{c|}{200} & \multicolumn{1}{c}{50} & \multicolumn{1}{c}{100} & \multicolumn{1}{c}{200} \\ 
+ \cmidrule{3-5} \cmidrule{6-8} 
+\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI1}} & 10 & \textbf{0.834} & \textbf{0.836} & \textbf{0.833} & \textbf{0.825} & \textbf{0.828} & \textbf{0.827} \\ 
+ & 20 & \textbf{0.833} & \textbf{0.833} & \textbf{0.832} & \textbf{0.821} & \textbf{0.822} & \textbf{0.821} \\ 
+ & 40 & \textbf{0.830} & \textbf{0.830} & \textbf{0.830} & \textbf{0.817} & \textbf{0.817} & \textbf{0.818} \\ 
+\midrule
+\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI2}} & 10 & \textbf{0.856} & \textbf{0.855} & \textbf{0.855} & \textbf{0.847} & \textbf{0.846} & \textbf{0.846} \\ 
+ & 20 & \textbf{0.851} & \textbf{0.852} & \textbf{0.853} & \textbf{0.842} & \textbf{0.842} & \textbf{0.843} \\ 
+ & 40 & \textbf{0.850} & \textbf{0.850} & \textbf{0.850} & \textbf{0.842} & \textbf{0.839} & \textbf{0.840} \\ 
+\midrule
+\multirow{3}{*}{\rotatebox[origin=c]{90}{DISCO1}} & 10 & \textbf{0.824} & \textbf{0.823} & \textbf{0.823} & \textbf{0.816} & \textbf{0.815} & \textbf{0.815} \\ 
+ & 20 & \textbf{0.825} & \textbf{0.823} & \textbf{0.824} & \textbf{0.810} & \textbf{0.810} & \textbf{0.810} \\ 
+ & 40 & \textbf{0.824} & \textbf{0.823} & \textbf{0.822} & \textbf{0.808} & \textbf{0.805} & \textbf{0.808} \\ 
+ \bottomrule 
+	\end{tabular} 
+	\caption{$P$/$w$}
+	\label{tbl:ex1:pw}
+\end{table}
