@@ -39,22 +39,26 @@ RESULTS_LOCATION = os.path.join('./final/diversity_results/', DIRECTORY)
 
 def ensemble_params_test(ensemble, stream_name):
     try:
-        # prepare evaluator
-        evaluator = TestThenTrainDiversity(verbose=True)
-        stream_path = os.path.abspath(os.path.join(STREAMS_LOCATION, stream_name))
-        stream = NPYParser(stream_path, chunk_size=CHUNK_SIZE, n_chunks=N_CHUNKS)
-
-        # start processing
-        Logger.start(f"starting {stream_name} using {ensemble}")
-        start_time = time.time()
-        evaluator.process(stream, (ensemble,))
-        Logger.end(f"end with {stream_name}, used {ensemble}, duration: {(time.time() - start_time):.3f}s")
-
-        # saving scores
         save_path = os.path.abspath(os.path.join(RESULTS_LOCATION, f'{ensemble}++{stream_name}'))
-        Logger.start(f"saving {ensemble} results under {save_path}")
-        np.save(file=save_path, arr=evaluator.scores)
-        Logger.end(f"saved {save_path}")
+        if os.path.exists(save_path + '.npy'):
+            Logger.end(f'no processing. File <<{save_path}>> already exists.')
+            return
+
+        # prepare evaluator
+        # evaluator = TestThenTrainDiversity(verbose=True)
+        # stream_path = os.path.abspath(os.path.join(STREAMS_LOCATION, stream_name))
+        # stream = NPYParser(stream_path, chunk_size=CHUNK_SIZE, n_chunks=N_CHUNKS)
+        #
+        # # start processing
+        # Logger.start(f"starting {stream_name} using {ensemble}")
+        # start_time = time.time()
+        # evaluator.process(stream, (ensemble,))
+        # Logger.end(f"end with {stream_name}, used {ensemble}, duration: {(time.time() - start_time):.3f}s")
+        #
+        # # saving scores
+        # Logger.start(f"saving {ensemble} results under {save_path}")
+        # np.save(file=save_path, arr=evaluator.scores)
+        # Logger.end(f"saved {save_path}")
     except Exception as e:
         Logger.error(f"Error during processing {stream_name} with {ensemble} - {e}")
     finally:
