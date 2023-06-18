@@ -10,6 +10,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from multiprocessing import freeze_support
 
 import numpy as np
+from sklearn.linear_model import SGDClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier
 from strlearn.ensembles import ONSBoost
@@ -22,21 +23,25 @@ from strlearn.streams import NPYParser
 RANDOM_STATES = [1000, 100000, 101010,
                  10110, 101101, 1001,
                  10101010, 101, 110, 1337]
-BASE_ESTIMATORS = [GaussianNB, MLPClassifier]
+BASE_ESTIMATORS = [SGDClassifier]
 METRICS = (balanced_accuracy_score,)
 PROTECTION_PERIODS = [50, 100, 200]
 WINDOW_SIZE = [10, 20, 40]
 UPDATE_PERIODS = [50, 100, 200]
 ENSEMBLE_SIZE = [5, 10, 30]
-N_CHUNKS = 250
+N_CHUNKS = 10
 N_SAMPLES = 200
-DIRECTORY = 'disco/'
+DIRECTORY = 'cdi/'
 STREAMS_LOCATION = os.path.join('./final/data_streams/', DIRECTORY)
 RESULTS_LOCATION = os.path.join('./final/parameters_results/', DIRECTORY)
 
 
 def ensemble_params_test(ensemble, stream_name):
     try:
+        save_path = os.path.abspath(os.path.join(RESULTS_LOCATION, f'{ensemble}++{stream_name}'))
+        if os.path.exists(save_path):
+            Logger.end(f'no processing. File <<{save_path}>> already exists.')
+            return
         # prepare evaluator
         evaluator = TestThenTrain(metrics=METRICS, verbose=True)
         stream_path = os.path.abspath(os.path.join(STREAMS_LOCATION, stream_name))
@@ -87,9 +92,9 @@ if __name__ == '__main__':
                     for window_size in WINDOW_SIZE:
                         for update_period in UPDATE_PERIODS:
                             for ensemble_size in ENSEMBLE_SIZE:
-                                estimator = ONSBoost(base_estimator=base_estimator(), n_estimators=ensemble_size,
-                                                     update_period=update_period, protection_period=protection_period,
-                                                     window_size=window_size)
+                                estimator = ONSBoost(base_estimator=SGDClassifier(loss='log_loss'),
+                                                     n_estimators=ensemble_size, update_period=update_period,
+                                                     protection_period=protection_period, window_size=window_size)
                                 tasks.append(pool.submit(ensemble_params_test, estimator, d_stream))
 
         for _ in as_completed(tasks):
