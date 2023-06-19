@@ -19,10 +19,11 @@ from strlearn.evaluators.TestThenTrain import Logger
 from strlearn.metrics import balanced_accuracy_score
 from strlearn.streams import NPYParser
 
+RANDOM_STATES = [10110, 101101, 1001]
 
-RANDOM_STATES = [1000, 100000, 101010,
-                 10110, 101101, 1001,
-                 10101010, 101, 110, 1337]
+# RANDOM_STATES = [1000, 100000, 101010,
+#                  10110, 101101, 1001,
+#                  10101010, 101, 110, 1337]
 BASE_ESTIMATORS = [SGDClassifier]
 METRICS = (balanced_accuracy_score,)
 PROTECTION_PERIODS = [50, 100, 200]
@@ -79,7 +80,12 @@ if __name__ == '__main__':
     freeze_support()
     multiprocessing.set_start_method('spawn', force=True)
 
-    data_streams_dir = [f for f in os.listdir(os.path.abspath(STREAMS_LOCATION)) if not os.path.isdir(f)]
+    data_streams_dir = [
+        f for f in os.listdir(os.path.abspath(STREAMS_LOCATION)) if not os.path.isdir(f)
+    ]
+    data_streams_dir = [
+        f for f in data_streams_dir if int(f.split('.')[0].split('__RST_')[1]) in RANDOM_STATES
+    ]
     with ProcessPoolExecutor(max_workers=multiprocessing.cpu_count() - 1, max_tasks_per_child=1) as pool:
         signal.signal(signal.SIGINT, sigint_handler(pool))
         tasks = []
