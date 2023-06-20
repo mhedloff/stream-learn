@@ -19,7 +19,7 @@ from strlearn.evaluators.TestThenTrain import Logger
 from strlearn.metrics import balanced_accuracy_score
 from strlearn.streams import NPYParser
 
-RANDOM_STATES = [10110, 101101, 1001]
+RANDOM_STATES = [1337]
 
 # RANDOM_STATES = [1000, 100000, 101010,
 #                  10110, 101101, 1001,
