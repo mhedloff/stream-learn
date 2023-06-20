@@ -19,11 +19,20 @@ from strlearn.evaluators.TestThenTrain import Logger
 from strlearn.metrics import balanced_accuracy_score
 from strlearn.streams import NPYParser
 
-RANDOM_STATES = [1337]
+RANDOM_STATES = []
 
-# RANDOM_STATES = [1000, 100000, 101010,
-#                  10110, 101101, 1001,
-#                  10101010, 101, 110, 1337]
+# pakiet 1
+# RANDOM_STATES = [1000, 100000]
+
+# pakiet 2
+# RANDOM_STATES = [101010, 10110]
+
+# pakiet 3
+# RANDOM_STATES = [1001]
+
+# wszystkie - nie ruszać
+# RANDOM_STATES = [1000, 100000, 101101, 101010, 10110, 1001, 10101010, 101, 110, 1337]
+
 BASE_ESTIMATORS = [SGDClassifier]
 METRICS = (balanced_accuracy_score,)
 PROTECTION_PERIODS = [50, 100, 200]
@@ -32,7 +41,7 @@ UPDATE_PERIODS = [50, 100, 200]
 ENSEMBLE_SIZE = [5, 10, 30]
 N_CHUNKS = 250
 N_SAMPLES = 200
-DIRECTORY = 'cdi/'
+DIRECTORY = 'disco/'
 STREAMS_LOCATION = os.path.join('./final/data_streams/', DIRECTORY)
 RESULTS_LOCATION = os.path.join('./final/parameters_results/', DIRECTORY)
 
