@@ -19,11 +19,20 @@ from strlearn.evaluators.TestThenTrain import Logger
 from strlearn.metrics import balanced_accuracy_score
 from strlearn.streams import NPYParser
 
-RANDOM_STATES = [10110, 101101, 1001]
+RANDOM_STATES = []
 
-# RANDOM_STATES = [1000, 100000, 101010,
-#                  10110, 101101, 1001,
-#                  10101010, 101, 110, 1337]
+# pakiet 1
+# RANDOM_STATES = [1000, 100000]
+
+# pakiet 2
+# RANDOM_STATES = [101010, 10110]
+
+# pakiet 3
+# RANDOM_STATES = [1001]
+
+# wszystkie - nie ruszać
+# RANDOM_STATES = [1000, 100000, 101101, 101010, 10110, 1001, 10101010, 101, 110, 1337]
+
 BASE_ESTIMATORS = [SGDClassifier]
 METRICS = (balanced_accuracy_score,)
 PROTECTION_PERIODS = [50, 100, 200]
@@ -32,7 +41,7 @@ UPDATE_PERIODS = [50, 100, 200]
 ENSEMBLE_SIZE = [5, 10, 30]
 N_CHUNKS = 250
 N_SAMPLES = 200
-DIRECTORY = 'cdi/'
+DIRECTORY = 'disco/'
 STREAMS_LOCATION = os.path.join('./final/data_streams/', DIRECTORY)
 RESULTS_LOCATION = os.path.join('./final/parameters_results/', DIRECTORY)
 
@@ -92,6 +101,7 @@ if __name__ == '__main__':
         all_params = [data_streams_dir, BASE_ESTIMATORS, PROTECTION_PERIODS, WINDOW_SIZE, UPDATE_PERIODS, ENSEMBLE_SIZE]
         lengths = [len(x) for x in all_params]
         tasks_n = functools.reduce(operator.mul, lengths)
+        done_tasks = 0
         for d_stream in data_streams_dir:
             for base_estimator in BASE_ESTIMATORS:
                 for protection_period in PROTECTION_PERIODS:
@@ -101,9 +111,15 @@ if __name__ == '__main__':
                                 estimator = ONSBoost(base_estimator=SGDClassifier(loss='log_loss'),
                                                      n_estimators=ensemble_size, update_period=update_period,
                                                      protection_period=protection_period, window_size=window_size)
-                                tasks.append(pool.submit(ensemble_params_test, estimator, d_stream))
+                                if os.path.exists(os.path.join(RESULTS_LOCATION, f'{estimator}++{d_stream}')):
+                                    done_tasks += 1
+                                    Logger.info(f'skipped. Progress: {done_tasks}/{tasks_n}.\n'
+                                                f'<<{estimator}++{d_stream}>> exists')
+                                else:
+                                    tasks.append(pool.submit(ensemble_params_test, estimator, d_stream))
 
         for _ in as_completed(tasks):
             _.done()
             pending_tasks_n = len(pool._pending_work_items)
-            Logger.info(f'{pending_tasks_n} left. Progress: {tasks_n - pending_tasks_n}/{tasks_n}')
+            done_tasks += 1
+            Logger.info(f'{pending_tasks_n} left. Progress: {done_tasks}/{tasks_n}')
