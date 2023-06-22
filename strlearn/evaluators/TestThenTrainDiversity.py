@@ -168,6 +168,9 @@ class TestThenTrainDiversity:
         self.scores = np.zeros(
             (len(self.clfs_), (self.stream_.n_chunks - 1), 5)
         )
+        self.bac = np.zeros(
+            (len(self.clfs_), (self.stream_.n_chunks - 1), 1)
+        )
 
         i = 0
         sum_time = 0
@@ -182,6 +185,7 @@ class TestThenTrainDiversity:
             if stream.previous_chunk is not None:
                 for clfid, clf in enumerate(self.clfs_):
                     self.scores[clfid, stream.chunk_id - 1] = np.array(calc_diversity_measures(X, y, clf.ensemble_))
+                    self.bac[clfid, stream.chunk_id - 1] = balanced_accuracy_score(y, clf.predict(X))
 
             # Train
             [clf.partial_fit(X, y, self.stream_.classes_) for clf in self.clfs_]
