@@ -1,3 +1,4 @@
+from sklearn.linear_model import SGDClassifier
 from sklearn.naive_bayes import GaussianNB
 
 from strlearn.ensembles import OnlineBoosting, ONSBoost
@@ -28,7 +29,7 @@ from strlearn.streams import NPYParser
 RANDOM_STATES = [1000, 100000, 101010,
                  10110, 101101, 1001,
                  10101010, 101, 110, 1337]
-BASE_ESTIMATORS = [GaussianNB, MLPClassifier]
+BASE_ESTIMATORS = [GaussianNB, MLPClassifier, SGDClassifier]
 ensemble_sizes = [5, 10, 20, 50, 75, 100]
 N_CHUNKS = 100
 CHUNK_SIZE = 100
@@ -58,6 +59,7 @@ def ensemble_params_test(ensemble, stream_name):
         # saving scores
         Logger.start(f"saving {ensemble} results under {save_path}")
         np.save(file=save_path, arr=evaluator.scores)
+        np.save(file='bac' + save_path, arr=evaluator.bac)
         Logger.end(f"saved {save_path}")
     except Exception as e:
         Logger.error(f"Error during processing {stream_name} with {ensemble} - {e}")

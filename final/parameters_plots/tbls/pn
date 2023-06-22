@@ -1,22 +1,20 @@
-\begin{table}[h]
-	 \centering 
-	\begin{tabular}{ll|lll|lll} 
-\toprule & $M$ & \multicolumn{3}{c}{MLPClassifier} & \multicolumn{3}{c}{GaussianNB} \\ 
- $P$ & & \multicolumn{1}{c}{50} & \multicolumn{1}{c}{100} & \multicolumn{1}{c|}{200} & \multicolumn{1}{c}{50} & \multicolumn{1}{c}{100} & \multicolumn{1}{c}{200} \\ 
- \cmidrule{3-5} \cmidrule{6-8} 
-\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI1}} & 5 & \textbf{0.817} & \textbf{0.817} & \textbf{0.818} & \textbf{0.823} & \textbf{0.821} & \textbf{0.822} \\ 
- & 10 & \textbf{0.828} & \textbf{0.828} & \textbf{0.827} & \textbf{0.825} & \textbf{0.828} & \textbf{0.827} \\ 
- & 30 & \textbf{0.834} & \textbf{0.836} & \textbf{0.833} & \textbf{0.820} & \textbf{0.816} & \textbf{0.819} \\ 
-\midrule
-\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI2}} & 5 & \textbf{0.837} & \textbf{0.837} & \textbf{0.838} & \textbf{0.841} & \textbf{0.841} & \textbf{0.842} \\ 
- & 10 & \textbf{0.846} & \textbf{0.847} & \textbf{0.847} & \textbf{0.847} & \textbf{0.846} & \textbf{0.846} \\ 
- & 30 & \textbf{0.856} & \textbf{0.855} & \textbf{0.855} & \textbf{0.841} & \textbf{0.837} & \textbf{0.839} \\ 
-\midrule
-\multirow{3}{*}{\rotatebox[origin=c]{90}{DISCO1}} & 5 & \textbf{0.813} & \textbf{0.813} & \textbf{0.813} & \textbf{0.816} & \textbf{0.815} & \textbf{0.815} \\ 
- & 10 & \textbf{0.822} & \textbf{0.822} & \textbf{0.823} & \textbf{0.813} & \textbf{0.814} & \textbf{0.813} \\ 
- & 30 & \textbf{0.825} & \textbf{0.823} & \textbf{0.824} & \textbf{0.798} & \textbf{0.797} & \textbf{0.796} \\ 
- \bottomrule 
-	\end{tabular} 
-	\caption{$P$/$M$}
+\subfloat[{ okres ochronny/wielkość puli}]{
 	\label{tbl:ex1:pn}
-\end{table}
+ 
+	\begin{tabular}{ll|lll|lll|lll} 
+\toprule & $M$ & \multicolumn{3}{c}{MLPClassifier} & \multicolumn{3}{c}{GaussianNB} & \multicolumn{3}{c}{SGDClassifier} \\ 
+ $P$ & & \multicolumn{1}{c}{50} & \multicolumn{1}{c}{100} & \multicolumn{1}{c|}{200} & \multicolumn{1}{c}{50} & \multicolumn{1}{c}{100} & \multicolumn{1}{c|}{200} & \multicolumn{1}{c}{50} & \multicolumn{1}{c}{100} & \multicolumn{1}{c}{200} \\ 
+ \cmidrule{3-5} \cmidrule{6-8} \cmidrule{9-11} 
+\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI1}} & 5 & \textbf{0.817} & \textbf{0.817} & \textbf{0.818} & \textbf{0.823} & \textbf{0.821} & \textbf{0.822} & \textbf{0.779} & \textbf{0.780} & \textbf{0.780} \\ 
+ & 10 & \textbf{0.828} & \textbf{0.828} & \textbf{0.827} & \textbf{0.825} & \textbf{0.828} & \textbf{0.827} & \textbf{0.773} & \textbf{0.773} & \textbf{0.772} \\ 
+ & 30 & \textbf{0.834} & \textbf{0.836} & \textbf{0.833} & \textbf{0.820} & \textbf{0.816} & \textbf{0.819} & \textbf{0.784} & \textbf{0.786} & \textbf{0.786} \\ 
+\midrule
+\multirow{3}{*}{\rotatebox[origin=c]{90}{CDI2}} & 5 & \textbf{0.837} & \textbf{0.837} & \textbf{0.838} & \textbf{0.841} & \textbf{0.841} & \textbf{0.842} & \textbf{0.796} & \textbf{0.797} & \textbf{0.797} \\ 
+ & 10 & \textbf{0.846} & \textbf{0.847} & \textbf{0.847} & \textbf{0.847} & \textbf{0.846} & \textbf{0.846} & \textbf{0.789} & \textbf{0.789} & \textbf{0.789} \\ 
+ & 30 & \textbf{0.856} & \textbf{0.855} & \textbf{0.855} & \textbf{0.841} & \textbf{0.837} & \textbf{0.839} & \textbf{0.802} & \textbf{0.806} & \textbf{0.805} \\ 
+\midrule
+\multirow{3}{*}{\rotatebox[origin=c]{90}{DISCO1}} & 5 & \textbf{0.813} & \textbf{0.813} & \textbf{0.813} & \textbf{0.816} & \textbf{0.815} & \textbf{0.815} & \textbf{0.790} & \textbf{0.791} & \textbf{0.791} \\ 
+ & 10 & \textbf{0.822} & \textbf{0.822} & \textbf{0.823} & \textbf{0.813} & \textbf{0.814} & \textbf{0.813} & \textbf{0.783} & \textbf{0.784} & \textbf{0.783} \\ 
+ & 30 & \textbf{0.825} & \textbf{0.823} & \textbf{0.824} & \textbf{0.798} & \textbf{0.797} & \textbf{0.796} & \textbf{0.794} & \textbf{0.794} & \textbf{0.794} \\ 
+ \bottomrule 
+	\end{tabular}} 
