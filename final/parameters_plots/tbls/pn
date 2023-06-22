@@ -13,8 +13,8 @@
  & 10 & \textbf{0.846} & \textbf{0.847} & \textbf{0.847} & \textbf{0.847} & \textbf{0.846} & \textbf{0.846} & \textbf{0.789} & \textbf{0.789} & \textbf{0.789} \\ 
  & 30 & \textbf{0.856} & \textbf{0.855} & \textbf{0.855} & \textbf{0.841} & \textbf{0.837} & \textbf{0.839} & \textbf{0.802} & \textbf{0.806} & \textbf{0.805} \\ 
 \midrule
-\multirow{3}{*}{\rotatebox[origin=c]{90}{DISCO1}} & 5 & \textbf{0.813} & \textbf{0.813} & \textbf{0.813} & \textbf{0.816} & \textbf{0.815} & \textbf{0.815} & \textbf{0.790} & \textbf{0.791} & \textbf{0.791} \\ 
- & 10 & \textbf{0.822} & \textbf{0.822} & \textbf{0.823} & \textbf{0.813} & \textbf{0.814} & \textbf{0.813} & \textbf{0.783} & \textbf{0.784} & \textbf{0.783} \\ 
- & 30 & \textbf{0.825} & \textbf{0.823} & \textbf{0.824} & \textbf{0.798} & \textbf{0.797} & \textbf{0.796} & \textbf{0.794} & \textbf{0.794} & \textbf{0.794} \\ 
+\multirow{3}{*}{\rotatebox[origin=c]{90}{DISCO1}} & 5 & \textbf{0.813} & \textbf{0.813} & \textbf{0.813} & \textbf{0.816} & \textbf{0.815} & \textbf{0.815} & \textbf{0.792} & \textbf{0.795} & \textbf{0.794} \\ 
+ & 10 & \textbf{0.822} & \textbf{0.822} & \textbf{0.823} & \textbf{0.813} & \textbf{0.814} & \textbf{0.813} & \textbf{0.785} & \textbf{0.787} & \textbf{0.785} \\ 
+ & 30 & \textbf{0.825} & \textbf{0.823} & \textbf{0.824} & \textbf{0.798} & \textbf{0.797} & \textbf{0.796} & \textbf{0.798} & \textbf{0.796} & \textbf{0.797} \\ 
  \bottomrule 
 	\end{tabular}} 
