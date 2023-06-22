@@ -35,12 +35,12 @@ RESULTS_LOCATION = os.path.join('./final/comparison_results/')
 #             OnlineBoosting(base_estimator=base(), n_estimators=20),
 #             OOB(base_estimator=base(), n_estimators=20),
 #             UOB(base_estimator=base(), n_estimators=20)]
-#
-# def prepare_other_estimators_sgd(base):
-#     return [OnlineBagging(base_estimator=base(loss='log_loss'), n_estimators=20),
-#             OnlineBoosting(base_estimator=base(loss='log_loss'), n_estimators=20),
-#             OOB(base_estimator=base(loss='log_loss'), n_estimators=20),
-#             UOB(base_estimator=base(loss='log_loss'), n_estimators=20)]
+
+def prepare_other_estimators_sgd(base):
+    return [OnlineBagging(base_estimator=base(loss='log_loss'), n_estimators=20),
+            OnlineBoosting(base_estimator=base(loss='log_loss'), n_estimators=20),
+            OOB(base_estimator=base(loss='log_loss'), n_estimators=20),
+            UOB(base_estimator=base(loss='log_loss'), n_estimators=20)]
 
 
 cases = [
@@ -55,7 +55,7 @@ cases = [
             'SGDClassifier': lambda: [
                 ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=200,
                          update_period=100, window_size=10),
-#                 *pr-epare_other_estimators_sgd(SGDClassifier)
+                *prepare_other_estimators_sgd(SGDClassifier)
             ]
         }
     },
@@ -70,7 +70,7 @@ cases = [
             'SGDClassifier': lambda: [
                 ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=100,
                          update_period=50, window_size=10),
-#                 *prepare_other_estimators_sgd(SGDClassifier)
+                *prepare_other_estimators_sgd(SGDClassifier)
             ]
         }
     },
@@ -85,7 +85,7 @@ cases = [
             'SGDClassifier': lambda: [
                 ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=50,
                          update_period=50, window_size=40),
-#                 *prepare_other_estimators_sgd(SGDClassifier)
+                *prepare_other_estimators_sgd(SGDClassifier)
             ]
         }
     }
