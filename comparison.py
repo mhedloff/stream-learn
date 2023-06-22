@@ -20,70 +20,72 @@ from strlearn.streams import NPYParser
 METRICS = (recall, specificity, precision, balanced_accuracy_score, f1_score, geometric_mean_score_1)
 
 RANDOM_STATES = [1000, 100000, 101010,
-                 10110, 101101, 1001,
-                 10101010, 101, 110, 1337]
-N_CHUNKS = 250
+                 10110, 101101]
+# RANDOM_STATES = [1000, 100000, 101010,
+#                  10110, 101101, 1001,
+#                  10101010, 101, 110, 1337]
+N_CHUNKS = 125
 N_SAMPLES = 200
 STREAMS_LOCATION = os.path.join('./final/comparison_streams/')
 RESULTS_LOCATION = os.path.join('./final/comparison_results/')
 
 
-def prepare_other_estimators(base):
-    return [OnlineBagging(base_estimator=base(), n_estimators=20),
-            OnlineBoosting(base_estimator=base(), n_estimators=20),
-            OOB(base_estimator=base(), n_estimators=20),
-            UOB(base_estimator=base(), n_estimators=20)]
-
-def prepare_other_estimators_sgd(base):
-    return [OnlineBagging(base_estimator=base(loss='log_loss'), n_estimators=20),
-            OnlineBoosting(base_estimator=base(loss='log_loss'), n_estimators=20),
-            OOB(base_estimator=base(loss='log_loss'), n_estimators=20),
-            UOB(base_estimator=base(loss='log_loss'), n_estimators=20)]
+# def prepare_other_estimators(base):
+#     return [OnlineBagging(base_estimator=base(), n_estimators=20),
+#             OnlineBoosting(base_estimator=base(), n_estimators=20),
+#             OOB(base_estimator=base(), n_estimators=20),
+#             UOB(base_estimator=base(), n_estimators=20)]
+#
+# def prepare_other_estimators_sgd(base):
+#     return [OnlineBagging(base_estimator=base(loss='log_loss'), n_estimators=20),
+#             OnlineBoosting(base_estimator=base(loss='log_loss'), n_estimators=20),
+#             OOB(base_estimator=base(loss='log_loss'), n_estimators=20),
+#             UOB(base_estimator=base(loss='log_loss'), n_estimators=20)]
 
 
 cases = [
     {
         'stream_prefix': 'cdi__w2_4_0,9__NC_250__CS_200',
         'ensembles': {
-            'GaussianNB': lambda: [
-                ONSBoost(base_estimator=GaussianNB(), n_estimators=10, protection_period=100, update_period=200,
-                         window_size=10),
-                *prepare_other_estimators(GaussianNB)
-            ],
+#             'GaussianNB': lambda: [
+#                 ONSBoost(base_estimator=GaussianNB(), n_estimators=10, protection_period=100, update_period=200,
+#                          window_size=10),
+#                 *prepare_other_estimators(GaussianNB)
+#             ],
             'SGDClassifier': lambda: [
-                ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=100,
-                         update_period=200, window_size=10),
-                *prepare_other_estimators_sgd(SGDClassifier)
+                ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=200,
+                         update_period=100, window_size=10),
+#                 *pr-epare_other_estimators_sgd(SGDClassifier)
             ]
         }
     },
     {
         'stream_prefix': 'cdi__w2_5_0,75__NC_250__CS_200',
         'ensembles': {
-            'GaussianNB': lambda: [
-                ONSBoost(base_estimator=GaussianNB(), n_estimators=10, protection_period=50, update_period=200,
-                         window_size=10),
-                *prepare_other_estimators(GaussianNB)
-            ],
+#             'GaussianNB': lambda: [
+#                 ONSBoost(base_estimator=GaussianNB(), n_estimators=10, protection_period=50, update_period=200,
+#                          window_size=10),
+#                 *prepare_other_estimators(GaussianNB)
+#             ],
             'SGDClassifier': lambda: [
-                ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=50,
-                         update_period=200, window_size=10),
-                *prepare_other_estimators_sgd(SGDClassifier)
+                ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=100,
+                         update_period=50, window_size=10),
+#                 *prepare_other_estimators_sgd(SGDClassifier)
             ]
         }
     },
     {
         'stream_prefix': 'disco__w2_5_0,9__NC_250__CS_200',
         'ensembles': {
-            'GaussianNB': lambda: [
-                ONSBoost(base_estimator=GaussianNB(), n_estimators=5, protection_period=50, update_period=200,
-                         window_size=10),
-                *prepare_other_estimators(GaussianNB)
-            ],
+#             'GaussianNB': lambda: [
+#                 ONSBoost(base_estimator=GaussianNB(), n_estimators=5, protection_period=50, update_period=200,
+#                          window_size=10),
+#                 *prepare_other_estimators(GaussianNB)
+#             ],
             'SGDClassifier': lambda: [
                 ONSBoost(base_estimator=SGDClassifier(loss='log_loss'), n_estimators=30, protection_period=50,
-                         update_period=200, window_size=20),
-                *prepare_other_estimators_sgd(SGDClassifier)
+                         update_period=50, window_size=40),
+#                 *prepare_other_estimators_sgd(SGDClassifier)
             ]
         }
     }
@@ -104,7 +106,7 @@ def ensemble_params_test(ensemble_supplier, stream_name, case_name):
         Logger.end(f" {case_name} :: end with {stream_name}, duration: {(time.time() - start_time):.3f}s")
 
         # saving scores
-        save_path = os.path.abspath(os.path.join(RESULTS_LOCATION, f'{case_name}++{stream_name}'))
+        save_path = os.path.abspath(os.path.join(RESULTS_LOCATION, f'v1{case_name}++{stream_name}'))
         Logger.start(f"saving {case_name} results under {save_path}")
         np.save(file=save_path, arr=evaluator.scores)
         Logger.end(f"saved {save_path}")
@@ -132,7 +134,7 @@ if __name__ == '__main__':
     data_streams_dir = [
         f for f in os.listdir(os.path.abspath(STREAMS_LOCATION)) if not os.path.isdir(f)
     ]
-    with ProcessPoolExecutor(max_workers=multiprocessing.cpu_count() - 1, max_tasks_per_child=1) as pool:
+    with ProcessPoolExecutor(max_workers=8, max_tasks_per_child=1) as pool:
     # with ProcessPoolExecutor(max_workers=1, max_tasks_per_child=1) as pool:
         signal.signal(signal.SIGINT, sigint_handler(pool))
         tasks = []
